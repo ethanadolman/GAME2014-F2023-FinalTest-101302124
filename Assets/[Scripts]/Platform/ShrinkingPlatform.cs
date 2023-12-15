@@ -10,6 +10,7 @@ public class ShrinkingPlatform : MonoBehaviour
     public float activationDelay = 2.0f; // Delay before the platform starts shrinking after activation
     public float resetDelay = 2.0f; // Delay before the platform resets to its original size after the player leaves
     public AudioClip shrinkSound; // Assign the audio clip in the Unity Editor
+    public AudioClip expandSound; // Assign the audio clip in the Unity Editor
 
     private Vector2 initialPosition;
     private bool activated = false;
@@ -75,12 +76,16 @@ public class ShrinkingPlatform : MonoBehaviour
     void ResetPlatform()
     {
         // Reset the platform to its original size after the player leaves
-        if (!activated && Time.time - timeSinceLastActivation > resetDelay)
+        if (!activated && Time.time - timeSinceLastActivation > resetDelay && transform.localScale != Vector3.one)
         {
             Vector3 newScale = transform.localScale;
             newScale += Vector3.one * shrinkSpeed * Time.deltaTime; // Adjust the reset speed
             newScale = Vector3.Min(newScale, Vector3.one); // Ensure the scale doesn't exceed the original size
             transform.localScale = newScale;
+            if (expandSound != null && !audioSource.isPlaying)
+            {
+                audioSource.PlayOneShot(expandSound);
+            }
         }
     }
 
