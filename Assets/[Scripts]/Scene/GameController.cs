@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         onScreenControls = GameObject.Find("OnScreenControls");
-        onScreenControls.SetActive(Application.isMobilePlatform);
+        onScreenControls.SetActive(true);
         soundManager = FindObjectOfType<SoundManager>();
         miniMap = GameObject.Find("MiniMap");
         

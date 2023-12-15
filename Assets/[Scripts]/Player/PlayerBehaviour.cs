@@ -57,7 +57,7 @@ public class PlayerBehaviour : MonoBehaviour
         life = FindObjectOfType<LifeCounterController>();
         deathPlane = FindObjectOfType<DeathPlaneController>();
         soundManager = FindObjectOfType<SoundManager>();
-        leftStick = (Application.isMobilePlatform) ? GameObject.Find("LeftStick").GetComponent<Joystick>() : null;
+        leftStick = GameObject.Find("LeftStick").GetComponent<Joystick>();
 
         dustTrail = GetComponentInChildren<ParticleSystem>();
 
@@ -71,6 +71,7 @@ public class PlayerBehaviour : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+
     }
 
     void Update()
@@ -119,7 +120,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void Move()
     {
-        var x = Input.GetAxisRaw("Horizontal") + ((Application.isMobilePlatform) ? leftStick.Horizontal : 0.0f);
+        var x = Input.GetAxisRaw("Horizontal") + leftStick.Horizontal;
 
         if (x != 0.0f)
         {
@@ -160,7 +161,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void Jump()
     {
-        var y = Input.GetAxis("Jump") + ((Application.isMobilePlatform) ? leftStick.Vertical : 0.0f);
+        var y = Input.GetAxis("Jump") + leftStick.Vertical;
 
         if ((isGrounded) && (y > verticalThreshold))
         {
