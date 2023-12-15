@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerBehaviour : MonoBehaviour
 {
+    private AudioSource audioSource;
+    public AudioClip collectSound;
+
     [Header("Movement Properties")] 
     public float horizontalForce;
     public float horizontalSpeed;
@@ -62,6 +65,12 @@ public class PlayerBehaviour : MonoBehaviour
         perlin = playerCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         isCameraShaking = false;
         shakeTimer = shakeDuration;
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     void Update()
@@ -216,5 +225,14 @@ public class PlayerBehaviour : MonoBehaviour
             soundManager.PlaySoundFX(Sound.HURT, Channel.PLAYER_HURT_FX);
             ShakeCamera();
         }
+
+        if (other.gameObject.CompareTag("Gem"))
+        {
+            audioSource.PlayOneShot(collectSound);
+            Destroy(other.gameObject);
+            
+        }
     }
+
+
 }
